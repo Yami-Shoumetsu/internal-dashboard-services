@@ -33,11 +33,11 @@ This is the project that will contain all the web services for internal IBM USAA
 2. Type `java -jar <name of war file here>.war`
 
 ### Source Package Structure 
-`com.ibm.usaa.configuration` - Will contain classes for bean configurations
-`com.ibm.usaa.mapper` - Will contain classes that transfers data from representation classes to other classes(entity, custom data object, etc.) and vice versa
-`com.ibm.usaa.resource` - Will contain classes that exposes rest apis
-`com.ibm.usaa.resource.representation` - Will contain classes that acts as the request/response objects of a rest api
-`com.ibm.usaa.service` - Will contain interfaces of services
-`com.ibm.usaa.service.impl` - Will contain implementation of services
-`com.ibm.usaa.repository` - Will contain spring-data-jpa repository classes
-`com.ibm.usaa.repository.entity` - Will contain jpa entity classes
+`com.ibm.usaa.configuration` - Will contain classes for bean configurations  
+`com.ibm.usaa.mapper` - Will contain classes that transfers data from representation classes to other classes(entity, custom data object, etc.) and vice versa  
+`com.ibm.usaa.resource` - Will contain classes that exposes rest apis  
+`com.ibm.usaa.resource.representation` - Will contain classes that acts as the request/response objects of a rest api  
+`com.ibm.usaa.service` - Will contain interfaces of services  
+`com.ibm.usaa.service.impl` - Will contain implementation of services  
+`com.ibm.usaa.repository` - Will contain spring-data-jpa repository classes  
+`com.ibm.usaa.repository.entity` - Will contain jpa entity classes  
