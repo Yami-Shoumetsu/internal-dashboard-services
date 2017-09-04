@@ -6,6 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "INTERVIEWERS_AVAILABILITY")
@@ -14,7 +16,12 @@ public class InterviewerAvailabilityVO {
 	@Id
 	@Column(name="INT_ID")
 	private int interviewerId;
+	
+	@Column(name="AVAIALBLE_DATE")
 	private String availableDate;
+	
+	@Column(name="AVAILABLE_TIME")
+	@Temporal(TemporalType.TIME)
 	private Date availableTime;
 	
 	public int getInterviewerId() {

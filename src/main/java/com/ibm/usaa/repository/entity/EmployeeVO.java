@@ -6,7 +6,8 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -34,13 +35,9 @@ public class EmployeeVO {
 	@JoinColumn(name="EMP_TYPE_ID")
 	private EmployeeTypeVO employeeTypeVO;
 	
-	@OneToMany
-	@JoinColumn(name="EMP_ID")
-	private List<OwnedApplicationsVO> ownedApplicationsVO;
-	
-	@OneToMany
-	@JoinColumn(name="ACCT_EXT_ID")
-	private List<ExpertiseVO> expertiseVO;
+	@ManyToMany
+	@JoinTable(name="OWNED_APPLICATIONS", joinColumns=@JoinColumn(name="EMP_ID"), inverseJoinColumns=@JoinColumn(name="APP_ID"))
+	private List<UsaaApplicationsVO> ownedApplications;
 	
 	public String getEmployeeId() {
 		return employeeId;
@@ -90,20 +87,12 @@ public class EmployeeVO {
 		this.employeeTypeVO = employeeTypeVO;
 	}
 
-	public List<OwnedApplicationsVO> getOwnedApplicationsVO() {
-		return ownedApplicationsVO;
+	public List<UsaaApplicationsVO> getOwnedApplications() {
+		return ownedApplications;
 	}
 
-	public void setOwnedApplicationsVO(List<OwnedApplicationsVO> ownedApplicationsVO) {
-		this.ownedApplicationsVO = ownedApplicationsVO;
+	public void setOwnedApplications(List<UsaaApplicationsVO> ownedApplications) {
+		this.ownedApplications = ownedApplications;
 	}
 
-	public List<ExpertiseVO> getExpertiseVO() {
-		return expertiseVO;
-	}
-
-	public void setExpertiseVO(List<ExpertiseVO> expertiseVO) {
-		this.expertiseVO = expertiseVO;
-	}
-	
 }

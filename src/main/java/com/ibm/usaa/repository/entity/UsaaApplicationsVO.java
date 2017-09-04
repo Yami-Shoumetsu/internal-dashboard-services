@@ -1,8 +1,11 @@
 package com.ibm.usaa.repository.entity;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -15,6 +18,9 @@ public class UsaaApplicationsVO {
 	
 	@Column(name="APP_NAME")
 	private String applicationName;
+	
+	@ManyToMany(mappedBy="ownedApplications")
+	private List<EmployeeVO> applicationOwners;
 
 	public int getApplicationId() {
 		return applicationId;
@@ -30,6 +36,14 @@ public class UsaaApplicationsVO {
 
 	public void setApplicationName(String applicationName) {
 		this.applicationName = applicationName;
+	}
+
+	public List<EmployeeVO> getApplicationOwners() {
+		return applicationOwners;
+	}
+
+	public void setApplicationOwners(List<EmployeeVO> applicationOwners) {
+		this.applicationOwners = applicationOwners;
 	}
 	
 }

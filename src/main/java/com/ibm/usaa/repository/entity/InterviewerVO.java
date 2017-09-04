@@ -7,13 +7,15 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "INTERVIEWERS")
-public class InterviewerVO extends EmployeeVO {
+public class InterviewerVO {
 
 	@Id
 	@Column(name="INT_ID", nullable=false, unique=true)
@@ -22,13 +24,21 @@ public class InterviewerVO extends EmployeeVO {
 	@Column(name="STATUS")
 	private String interviewerStatus;
 	
-	@OneToMany
+	@OneToOne
+	@JoinColumn(name="EMP_ID")
+	private EmployeeVO employee;
+	
+	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="INT_ID")
 	private List<InterviewHistoryVO> interviewHistory;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="INT_ID")
 	private List<InterviewerAvailabilityVO> interviewerAvailability;
+	
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name="INTERVIEWER_EXPERTISE", joinColumns=@JoinColumn(name="INT_ID"), inverseJoinColumns=@JoinColumn(name="ACCT_EXT_ID"))
+	private List<ExpertiseVO> expertises;
 	
 	public int getInterviewerId() {
 		return interviewerId;
@@ -60,6 +70,14 @@ public class InterviewerVO extends EmployeeVO {
 
 	public void setInterviewerAvailability(List<InterviewerAvailabilityVO> interviewerAvailability) {
 		this.interviewerAvailability = interviewerAvailability;
+	}
+
+	public List<ExpertiseVO> getExpertises() {
+		return expertises;
+	}
+
+	public void setExpertises(List<ExpertiseVO> expertises) {
+		this.expertises = expertises;
 	}
 	
 }
