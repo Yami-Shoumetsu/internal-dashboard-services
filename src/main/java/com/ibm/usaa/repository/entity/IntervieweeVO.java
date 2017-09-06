@@ -1,12 +1,10 @@
 package com.ibm.usaa.repository.entity;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -17,10 +15,13 @@ public class IntervieweeVO {
 	@Column(name="INT_VIEW_ID", nullable=false, unique=true)
 	private int intervieweeId;
 	
-	@Column(name="INT_FIRST_NAME")
+	@Column(name="INT_F_NAME")
 	private String firstName;
 	
-	@Column(name="INT_LAST_NAME")
+	@Column(name="INT_M_NAME")
+	private String middleName;
+	
+	@Column(name="INT_L_NAME")
 	private String lastName;
 	
 	@Column(name="INT_CONTACT_NUMBER")
@@ -29,9 +30,12 @@ public class IntervieweeVO {
 	@Column(name="INT_EMAIL")
 	private String emailAddress;
 	
-	@OneToMany
+	@Column(name="IS_INTERNAL", columnDefinition="INT(1)")
+	private boolean isInternal;
+	
+	@OneToOne
 	@JoinColumn(name="ACCT_EXT_ID")
-	private List<ExpertiseVO> expertiseVO;
+	private ExpertiseVO expertise;
 	
 	public int getIntervieweeId() {
 		return intervieweeId;
@@ -49,6 +53,14 @@ public class IntervieweeVO {
 		this.firstName = firstName;
 	}
 	
+	public String getMiddleName() {
+		return middleName;
+	}
+
+	public void setMiddleName(String middleName) {
+		this.middleName = middleName;
+	}
+
 	public String getLastName() {
 		return lastName;
 	}
@@ -71,6 +83,22 @@ public class IntervieweeVO {
 	
 	public void setEmailAddress(String emailAddress) {
 		this.emailAddress = emailAddress;
+	}
+
+	public boolean isInternal() {
+		return isInternal;
+	}
+
+	public void setInternal(boolean isInternal) {
+		this.isInternal = isInternal;
+	}
+
+	public ExpertiseVO getExpertise() {
+		return expertise;
+	}
+
+	public void setExpertise(ExpertiseVO expertise) {
+		this.expertise = expertise;
 	}
 	
 }

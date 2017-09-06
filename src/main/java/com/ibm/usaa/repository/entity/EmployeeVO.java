@@ -19,10 +19,13 @@ public class EmployeeVO {
 	@Column(name="EMP_ID", nullable=false, unique=true)
 	private String employeeId;
 	
-	@Column(name="EMP_FIRST_NAME")
+	@Column(name="EMP_F_NAME")
 	private String firstName;
 	
-	@Column(name="EMP_LAST_NAME")
+	@Column(name="EMP_M_NAME")
+	private String middleName;
+	
+	@Column(name="EMP_L_NAME")
 	private String lastName;
 	
 	@Column(name="EMP_CONTACT_NUMBER")
@@ -53,6 +56,14 @@ public class EmployeeVO {
 
 	public void setFirstName(String firstName) {
 		this.firstName = firstName;
+	}
+
+	public String getMiddleName() {
+		return middleName;
+	}
+
+	public void setMiddleName(String middleName) {
+		this.middleName = middleName;
 	}
 
 	public String getLastName() {

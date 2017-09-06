@@ -13,11 +13,11 @@ import org.springframework.stereotype.Component;
  *
  */
 @Component
-@ApplicationPath("/services")
+@ApplicationPath("/internal-dashboard-services")
 public class JerseyConfiguration extends ResourceConfig {
 
     public JerseyConfiguration() {
-        packages("com.ibm.usaa.services.resources");
+        packages("com.ibm.usaa.resource");
     }
 
 }

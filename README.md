@@ -1,4 +1,4 @@
-# IBM USAA Services
+# Internal Dashboard Services
 This is the project that will contain all the web services for internal IBM USAA applications.
 
 ### Build Server
