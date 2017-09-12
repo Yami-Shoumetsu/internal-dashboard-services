@@ -2,6 +2,7 @@ package com.ibm.usaa.repository.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
@@ -12,8 +13,9 @@ import javax.persistence.Table;
 public class IntervieweeVO {
 	
 	@Id
+	@GeneratedValue
 	@Column(name="INT_VIEW_ID", nullable=false, unique=true)
-	private int intervieweeId;
+	private Integer intervieweeId;
 	
 	@Column(name="INT_F_NAME")
 	private String firstName;
@@ -31,17 +33,17 @@ public class IntervieweeVO {
 	private String emailAddress;
 	
 	@Column(name="IS_INTERNAL", columnDefinition="INT(1)")
-	private boolean isInternal;
+	private Boolean isInternal;
 	
 	@OneToOne
 	@JoinColumn(name="ACCT_EXT_ID")
 	private ExpertiseVO expertise;
 	
-	public int getIntervieweeId() {
+	public Integer getIntervieweeId() {
 		return intervieweeId;
 	}
 	
-	public void setIntervieweeId(int intervieweeId) {
+	public void setIntervieweeId(Integer intervieweeId) {
 		this.intervieweeId = intervieweeId;
 	}
 	
@@ -85,11 +87,11 @@ public class IntervieweeVO {
 		this.emailAddress = emailAddress;
 	}
 
-	public boolean isInternal() {
+	public Boolean isInternal() {
 		return isInternal;
 	}
 
-	public void setInternal(boolean isInternal) {
+	public void setInternal(Boolean isInternal) {
 		this.isInternal = isInternal;
 	}
 

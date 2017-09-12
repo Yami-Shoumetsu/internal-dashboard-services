@@ -12,27 +12,27 @@ public class InterviewHistoryPK implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Column(name="INT_ID")
-	private int interviewerId;
+	private Integer interviewerId;
 	
 	@Column(name="INT_VIEW_ID")
-	private int intervieweeId;
+	private Integer intervieweeId;
 	
 	@Column(name="DATE")
 	private Date interviewDate;
 	
-	public int getInterviewerId() {
+	public Integer getInterviewerId() {
 		return interviewerId;
 	}
 	
-	public void setInterviewerId(int interviewerId) {
+	public void setInterviewerId(Integer interviewerId) {
 		this.interviewerId = interviewerId;
 	}
 	
-	public int getIntervieweeId() {
+	public Integer getIntervieweeId() {
 		return intervieweeId;
 	}
 	
-	public void setIntervieweeId(int intervieweeId) {
+	public void setIntervieweeId(Integer intervieweeId) {
 		this.intervieweeId = intervieweeId;
 	}
 	

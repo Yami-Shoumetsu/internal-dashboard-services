@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -18,8 +19,9 @@ import javax.persistence.Table;
 public class InterviewerVO {
 
 	@Id
+	@GeneratedValue
 	@Column(name="INT_ID", nullable=false, unique=true)
-	private int interviewerId;
+	private Integer interviewerId;
 	
 	@Column(name="STATUS")
 	private String interviewerStatus;
@@ -40,11 +42,11 @@ public class InterviewerVO {
 	@JoinTable(name="INTERVIEWER_EXPERTISE", joinColumns=@JoinColumn(name="INT_ID"), inverseJoinColumns=@JoinColumn(name="ACCT_EXT_ID"))
 	private List<ExpertiseVO> expertises;
 	
-	public int getInterviewerId() {
+	public Integer getInterviewerId() {
 		return interviewerId;
 	}
 
-	public void setInterviewerId(int interviewerId) {
+	public void setInterviewerId(Integer interviewerId) {
 		this.interviewerId = interviewerId;
 	}
 
