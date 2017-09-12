@@ -38,5 +38,6 @@ This is the project that will contain all the web services for internal IBM USAA
 `com.ibm.usaa.resource` - Will contain classes that exposes rest apis  
 `com.ibm.usaa.resource.representation` - Will contain classes that acts as the request/response objects of a rest api  
 `com.ibm.usaa.service` - Will contain services   
+`com.ibm.usaa.exception` - Will contain custom exception classes   
 `com.ibm.usaa.repository` - Will contain spring-data-jpa repository classes  
 `com.ibm.usaa.repository.entity` - Will contain jpa entity classes  
