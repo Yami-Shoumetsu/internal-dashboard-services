@@ -2,6 +2,7 @@ package com.ibm.usaa;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.system.ApplicationPidFileWriter;
 
 /**
  * Main class to run the Spring Boot application. This eliminates the need of
@@ -14,7 +15,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class Application {
 
     public static void main(String[] args) {
-        SpringApplication.run(Application.class, args);
+        SpringApplication springApplication = new SpringApplication(Application.class);
+        springApplication.addListeners(new ApplicationPidFileWriter("internal-dashboard-services.pid"));
+        springApplication.run(args);
     }
 
 }

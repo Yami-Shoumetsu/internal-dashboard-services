@@ -12,10 +12,10 @@
 				>
 			</PatternLayout>
 		</Console>
-		<RollingFile name="RollingFile-Appender" fileName="${log-path}/ibm-usaa-innovation.log"
-			filePattern="${log-path}/ibm-usaa-innovation.%d{yyyy-MM-dd-hh-mm}.log">
-			<PatternLayout
-				pattern="[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n" />
+		<RollingFile name="RollingFile-Appender"
+			fileName="${log-path}/internal-dashboard-services.log"
+			filePattern="${log-path}/internal-dashboard-services.%d{yyyy-MM-dd-hh-mm}.log">
+			<PatternLayout pattern="[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %c{1} - %msg%n" />
 			<Policies>
 				<TimeBasedTriggeringPolicy />
 			</Policies>
@@ -24,9 +24,11 @@
 	</Appenders>
 
 	<Loggers>
+		<Root level="info">
+			<AppenderRef ref="RollingFile-Appender" />
+		</Root>
 		<Root level="debug">
 			<AppenderRef ref="Console-Appender" />
-			<AppenderRef ref="RollingFile-Appender" />
 		</Root>
 	</Loggers>
 </Configuration>
