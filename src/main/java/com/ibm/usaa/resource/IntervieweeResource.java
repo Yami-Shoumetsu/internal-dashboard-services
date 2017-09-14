@@ -4,7 +4,9 @@
 package com.ibm.usaa.resource;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 import javax.ws.rs.BadRequestException;
@@ -67,12 +69,17 @@ public class IntervieweeResource {
         List<Resource<IntervieweeRO>> intervieweeResources = new ArrayList<>();
         for (IntervieweeRO intervieweeRO : intervieweeROs) {
             Resource<IntervieweeRO> intervieweeResource = new Resource<>(intervieweeRO);
-            intervieweeResource.add(RestUtils.createHateoasLinks(IntervieweeResource.class, "getInterviewee", "self", intervieweeRO.getId()));
+            intervieweeResource.add(RestUtils.createHateoasLinks(IntervieweeResource.class, "getInterviewee", "self", null, intervieweeRO.getId()));
             intervieweeResources.add(intervieweeResource);
         }
 
         Resources<Resource<IntervieweeRO>> resources = new Resources<>(intervieweeResources);
-        resources.add(RestUtils.createHateoasLinks(IntervieweeResource.class, null, "self"));
+        Map<String, String> queryParams = null;
+        if (!StringUtils.isEmpty(expertise)) {
+            queryParams = new HashMap<>();
+            queryParams.put("expertise", expertise);
+        }
+        resources.add(RestUtils.createHateoasLinks(IntervieweeResource.class, null, "self", queryParams));
         return Response.ok(resources)
                 .build();
     }
@@ -101,8 +108,9 @@ public class IntervieweeResource {
             IntervieweeRO intervieweeRO = IntervieweeMapper.mapIntervieweeToRepresentationObject(interviewee);
 
             Resource<IntervieweeRO> resource = new Resource<>(intervieweeRO);
-            resource.add(RestUtils.createHateoasLinks(IntervieweeResource.class, "getInterviewee", "self", intervieweeId));
-            resource.add(RestUtils.createHateoasLinks(IntervieweeResource.class, "getExpertiseOfInterviewee", "expertise", intervieweeId));
+            resource.add(RestUtils.createHateoasLinks(IntervieweeResource.class, null, "interviewees", null));
+            resource.add(RestUtils.createHateoasLinks(IntervieweeResource.class, "getInterviewee", "self", null, intervieweeId));
+            resource.add(RestUtils.createHateoasLinks(IntervieweeResource.class, "getExpertiseOfInterviewee", "expertise", null, intervieweeId));
             return Response.ok(resource)
                     .build();
         } catch (InvalidIdException e) {
@@ -135,9 +143,9 @@ public class IntervieweeResource {
             ExpertiseRO expertiseRO = ExpertiseMapper.mapExpertiseToRepresentationObject(expertise);
 
             Resource<ExpertiseRO> resource = new Resource<>(expertiseRO);
-            resource.add(RestUtils.createHateoasLinks(IntervieweeResource.class, "getInterviewee", "parent", intervieweeId));
-            resource.add(RestUtils.createHateoasLinks(IntervieweeResource.class, "getExpertiseOfInterviewee", "self", intervieweeId));
-            resource.add(RestUtils.createHateoasLinks(ExpertiseResource.class, "getExpertise", "origin", expertiseRO.getId()));
+            resource.add(RestUtils.createHateoasLinks(IntervieweeResource.class, "getInterviewee", "parent", null, intervieweeId));
+            resource.add(RestUtils.createHateoasLinks(IntervieweeResource.class, "getExpertiseOfInterviewee", "self", null, intervieweeId));
+            resource.add(RestUtils.createHateoasLinks(ExpertiseResource.class, "getExpertise", "origin", null, expertiseRO.getId()));
             return Response.ok(resource)
                     .build();
         } catch (InvalidIdException e) {

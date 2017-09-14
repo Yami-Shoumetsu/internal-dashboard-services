@@ -53,12 +53,12 @@ public class ExpertiseResource {
         List<Resource<ExpertiseRO>> expertiseResources = new ArrayList<>();
         for (ExpertiseRO expertiseRO : expertiseROs) {
             Resource<ExpertiseRO> expertiseResource = new Resource<>(expertiseRO);
-            expertiseResource.add(RestUtils.createHateoasLinks(ExpertiseResource.class, "getExpertise", "self", expertiseRO.getId()));
+            expertiseResource.add(RestUtils.createHateoasLinks(ExpertiseResource.class, "getExpertise", "self", null, expertiseRO.getId()));
             expertiseResources.add(expertiseResource);
         }
 
         Resources<Resource<ExpertiseRO>> resources = new Resources<>(expertiseResources);
-        resources.add(RestUtils.createHateoasLinks(ExpertiseResource.class, null, "self"));
+        resources.add(RestUtils.createHateoasLinks(ExpertiseResource.class, null, "self", null));
         return Response.ok(resources)
                 .build();
     }
@@ -80,7 +80,8 @@ public class ExpertiseResource {
             ExpertiseRO expertiseRO = ExpertiseMapper.mapExpertiseToRepresentationObject(expertise);
 
             Resource<ExpertiseRO> resource = new Resource<>(expertiseRO);
-            resource.add(RestUtils.createHateoasLinks(ExpertiseResource.class, "getExpertise", "self", expertiseId));
+            resource.add(RestUtils.createHateoasLinks(ExpertiseResource.class, null, "expertises", null));
+            resource.add(RestUtils.createHateoasLinks(ExpertiseResource.class, "getExpertise", "self", null, expertiseId));
             return Response.ok(resource)
                     .build();
         } catch (InvalidIdException e) {
