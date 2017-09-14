@@ -41,7 +41,7 @@ public class RestUtils {
      *            urls
      * @return a HATEOAS {@link Link}
      */
-    public static Link createHateoasLinks(Class<?> resource, String method, String rel, Map<String, String> queryParams, Object... params) {
+    public static Link createHateoasLinks(Class<?> resource, String method, String rel, Map<String, Object> queryParams, Object... params) {
         UriBuilder uriBuilder;
         if (StringUtils.isEmpty(method)) {
             uriBuilder = UriBuilder.fromUri(ServletUriComponentsBuilder.fromCurrentServletMapping()
