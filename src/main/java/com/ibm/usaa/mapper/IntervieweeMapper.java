@@ -31,7 +31,7 @@ public class IntervieweeMapper {
     public static IntervieweeRO mapIntervieweeToRepresentationObject(IntervieweeVO interviewee) {
         if (interviewee != null) {
             IntervieweeRO intervieweeRO = new IntervieweeRO();
-            intervieweeRO.setId(interviewee.getIntervieweeId());
+            intervieweeRO.setResourceId(interviewee.getIntervieweeId());
             intervieweeRO.setFirstName(interviewee.getFirstName());
             intervieweeRO.setMiddleName(interviewee.getMiddleName());
             intervieweeRO.setLastName(interviewee.getLastName());
@@ -46,7 +46,7 @@ public class IntervieweeMapper {
     public static IntervieweeVO mapIntervieweeFromRepresentationObject(IntervieweeRO intervieweeRO) {
         if (intervieweeRO != null) {
             IntervieweeVO interViewee = new IntervieweeVO();
-            interViewee.setIntervieweeId(intervieweeRO.getId());
+            interViewee.setIntervieweeId(intervieweeRO.getResourceId());
             interViewee.setFirstName(intervieweeRO.getFirstName());
             interViewee.setMiddleName(intervieweeRO.getMiddleName());
             interViewee.setLastName(intervieweeRO.getLastName());
