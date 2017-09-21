@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
@@ -14,9 +13,8 @@ import javax.persistence.Table;
 public class UsaaApplicationsVO {
 
 	@Id
-	@GeneratedValue
 	@Column(name="APP_ID", nullable=false, unique=true)
-	private Integer applicationId;
+	private int applicationId;
 	
 	@Column(name="APP_NAME")
 	private String applicationName;
@@ -24,11 +22,11 @@ public class UsaaApplicationsVO {
 	@ManyToMany(mappedBy="ownedApplications")
 	private List<EmployeeVO> applicationOwners;
 
-	public Integer getApplicationId() {
+	public int getApplicationId() {
 		return applicationId;
 	}
 
-	public void setApplicationId(Integer applicationId) {
+	public void setApplicationId(int applicationId) {
 		this.applicationId = applicationId;
 	}
 
