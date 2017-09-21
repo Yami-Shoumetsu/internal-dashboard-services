@@ -2,7 +2,6 @@ package com.ibm.usaa.repository.entity;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -11,18 +10,17 @@ import javax.persistence.Table;
 public class EmployeeTypeVO {
 
 	@Id
-	@GeneratedValue
 	@Column(name="EMP_TYPE_ID", nullable=false, unique=true)
-	private Integer employeeTypeId;
+	private int employeeTypeId;
 	
 	@Column(name="EMP_TYPE_NAME")
 	private String employeeTypeName;
 
-	public Integer getEmployeeTypeId() {
+	public int getEmployeeTypeId() {
 		return employeeTypeId;
 	}
 
-	public void setEmployeeTypeId(Integer employeeTypeId) {
+	public void setEmployeeTypeId(int employeeTypeId) {
 		this.employeeTypeId = employeeTypeId;
 	}
 

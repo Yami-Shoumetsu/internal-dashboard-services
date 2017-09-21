@@ -15,7 +15,7 @@ public class InterviewerAvailabilityVO {
 
 	@Id
 	@Column(name="INT_ID")
-	private Integer interviewerId;
+	private int interviewerId;
 	
 	@Column(name="AVAIALBLE_DATE")
 	private String availableDate;
@@ -24,11 +24,11 @@ public class InterviewerAvailabilityVO {
 	@Temporal(TemporalType.TIME)
 	private Date availableTime;
 	
-	public Integer getInterviewerId() {
+	public int getInterviewerId() {
 		return interviewerId;
 	}
 	
-	public void setInterviewerId(Integer interviewerId) {
+	public void setInterviewerId(int interviewerId) {
 		this.interviewerId = interviewerId;
 	}
 	
