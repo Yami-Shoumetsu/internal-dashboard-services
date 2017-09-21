@@ -15,4 +15,3 @@ target/
 .factorypath
 /logs/
 .idea/
-*.pid
