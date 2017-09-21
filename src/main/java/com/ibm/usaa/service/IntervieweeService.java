@@ -27,7 +27,7 @@ public class IntervieweeService {
     }
 
     public List<IntervieweeVO> getIntervieweesByExpertise(String expertiseName) {
-        return intervieweeRepository.findByExpertiseExpertiseName(expertiseName);
+        return intervieweeRepository.findByExpertise(expertiseName);
     }
 
     public IntervieweeVO getInterviewee(int id) throws InvalidIdException {
