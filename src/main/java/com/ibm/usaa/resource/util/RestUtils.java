@@ -4,12 +4,10 @@
 package com.ibm.usaa.resource.util;
 
 import java.net.URI;
-import java.util.Map;
 
 import javax.ws.rs.core.UriBuilder;
 
 import org.springframework.hateoas.Link;
-import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -34,31 +32,25 @@ public class RestUtils {
      *            derived. Can be null.
      * @param rel
      *            the relationship of the link
-     * @param queryParams
-     *            map of query parameter names and its value
      * @param params
      *            the parameters that will be used to resolve variables in the
      *            urls
      * @return a HATEOAS {@link Link}
      */
-    public static Link createHateoasLinks(Class<?> resource, String method, String rel, Map<String, String> queryParams, Object... params) {
-        UriBuilder uriBuilder;
+    public static Link createHateoasLinks(Class<?> resource, String method, String rel, Object... params) {
+        URI uri;
         if (StringUtils.isEmpty(method)) {
-            uriBuilder = UriBuilder.fromUri(ServletUriComponentsBuilder.fromCurrentServletMapping()
-                    .toUriString())
-                    .path(resource);
-        } else {
-            uriBuilder = UriBuilder.fromUri(ServletUriComponentsBuilder.fromCurrentServletMapping()
+            uri = UriBuilder.fromUri(ServletUriComponentsBuilder.fromCurrentServletMapping()
                     .toUriString())
                     .path(resource)
-                    .path(resource, method);
+                    .build(params);
+        } else {
+            uri = UriBuilder.fromUri(ServletUriComponentsBuilder.fromCurrentServletMapping()
+                    .toUriString())
+                    .path(resource)
+                    .path(resource, method)
+                    .build(params);
         }
-        if (!ObjectUtils.isEmpty(queryParams)) {
-            queryParams.forEach((key, value) -> {
-                uriBuilder.queryParam(key, value);
-            });
-        }
-        URI uri = uriBuilder.build(params);
         return new Link(uri.toString(), rel);
     }
 
