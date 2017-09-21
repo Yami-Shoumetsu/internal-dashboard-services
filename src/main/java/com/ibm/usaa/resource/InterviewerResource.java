@@ -54,7 +54,7 @@ public class InterviewerResource {
     @GET
     @ApiOperation(value = "Returns list of interviewers", notes = "\"content\" in the response contains list of InterViewerRO", code = 200, response = Resources.class)
     public Response getInterviewers(
-            @ApiParam(value = "name of expertise", required = true, allowMultiple = false) @QueryParam("expertise") String expertise) {
+            @ApiParam(value = "name of expertise", required = false, allowMultiple = false) @QueryParam("expertise") String expertise) {
         List<InterviewerVO> interviewers = interviewerService.getInterviewers(expertise);
         List<InterviewerRO> interviewerROs = InterviewerMapper.mapInterviewersToRepresentationObject(interviewers);
 
@@ -85,8 +85,8 @@ public class InterviewerResource {
         try {
             InterviewerVO interviewer = interviewerService.getInterviewer(interviewerId);
             InterviewerRO interviewerRO = InterviewerMapper.mapInterviewerToRepresentationObject(interviewer);
-            interviewerRO.add(RestUtils.createHateoasLinks(IntervieweeResource.class, null, "interviewers", null));
-            interviewerRO.add(RestUtils.createHateoasLinks(IntervieweeResource.class, "getInterviewer", "self", null, interviewerId));
+            interviewerRO.add(RestUtils.createHateoasLinks(InterviewerResource.class, null, "interviewers", null));
+            interviewerRO.add(RestUtils.createHateoasLinks(InterviewerResource.class, "getInterviewer", "self", null, interviewerId));
             return Response.ok(interviewerRO)
                     .build();
         } catch (InvalidIdException e) {
