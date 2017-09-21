@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.ibm.usaa.exception.DuplicateDataException;
 import com.ibm.usaa.exception.InvalidIdException;
 import com.ibm.usaa.repository.ExpertiseRepository;
 import com.ibm.usaa.repository.entity.ExpertiseVO;
@@ -33,11 +32,7 @@ public class ExpertiseService {
         return expertiseVO;
     }
 
-    public int addExpertise(ExpertiseVO expertiseVO) throws DuplicateDataException {
-        int numberOfExistingExpertiseName = expertiseRepository.countByExpertiseNameIgnoreCase(expertiseVO.getExpertiseName());
-        if (numberOfExistingExpertiseName != 0) {
-            throw new DuplicateDataException();
-        }
+    public int addExpertise(ExpertiseVO expertiseVO) {
         expertiseVO = expertiseRepository.save(expertiseVO);
         return expertiseVO.getExpertiseId();
     }
