@@ -3,6 +3,8 @@ package com.ibm.usaa.repository;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import com.ibm.usaa.repository.entity.IntervieweeVO;
 
@@ -12,6 +14,7 @@ import com.ibm.usaa.repository.entity.IntervieweeVO;
  */
 public interface IntervieweeRepository extends JpaRepository<IntervieweeVO, Integer> {
 
-    public List<IntervieweeVO> findByExpertiseExpertiseName(String expertiseName);
+    @Query("SELECT i FROM IntervieweeVO i WHERE i.expertise.expertiseName = :expertiseName")
+    public List<IntervieweeVO> findByExpertise(@Param("expertiseName") String expertiseName);
 
 }
