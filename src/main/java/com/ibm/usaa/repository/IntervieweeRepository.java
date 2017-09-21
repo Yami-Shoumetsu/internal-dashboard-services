@@ -14,8 +14,4 @@ public interface IntervieweeRepository extends JpaRepository<IntervieweeVO, Inte
 
     public List<IntervieweeVO> findByExpertiseExpertiseName(String expertiseName);
 
-    public List<IntervieweeVO> findByIsInternal(boolean isInternal);
-
-    public List<IntervieweeVO> findByExpertiseExpertiseNameAndIsInternal(String expertiseName, boolean isInternal);
-
 }
