@@ -29,7 +29,7 @@ public class InterviewerVO {
 	@OneToOne
 	@JoinColumn(name="EMP_ID")
 	private EmployeeVO employee;
-
+	
 	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="INT_ID")
 	private List<InterviewHistoryVO> interviewHistory;
@@ -56,14 +56,6 @@ public class InterviewerVO {
 
 	public void setInterviewerStatus(String interviewerStatus) {
 		this.interviewerStatus = interviewerStatus;
-	}
-	
-	public EmployeeVO getEmployee() {
-		return employee;
-	}
-
-	public void setEmployee(EmployeeVO employee) {
-		this.employee = employee;
 	}
 
 	public List<InterviewHistoryVO> getInterviewHistory() {
