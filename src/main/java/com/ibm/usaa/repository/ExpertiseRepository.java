@@ -13,6 +13,4 @@ import com.ibm.usaa.repository.entity.ExpertiseVO;
  */
 public interface ExpertiseRepository extends JpaRepository<ExpertiseVO, Integer> {
 
-    public int countByExpertiseNameIgnoreCase(String expertiseName);
-
 }

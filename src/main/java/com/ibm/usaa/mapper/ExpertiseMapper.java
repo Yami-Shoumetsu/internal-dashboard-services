@@ -31,7 +31,7 @@ public class ExpertiseMapper {
     public static ExpertiseRO mapExpertiseToRepresentationObject(ExpertiseVO expertise) {
         if (expertise != null) {
             ExpertiseRO expertiseRO = new ExpertiseRO();
-            expertiseRO.setResourceId(expertise.getExpertiseId());
+            expertiseRO.setId(expertise.getExpertiseId());
             expertiseRO.setName(expertise.getExpertiseName());
             return expertiseRO;
         }
@@ -41,7 +41,7 @@ public class ExpertiseMapper {
     public static ExpertiseVO mapExpertiseFromRepresentationObject(ExpertiseRO expertiseRO) {
         if (expertiseRO != null) {
             ExpertiseVO expertise = new ExpertiseVO();
-            expertise.setExpertiseId(expertiseRO.getResourceId());
+            expertise.setExpertiseId(expertiseRO.getId());
             expertise.setExpertiseName(expertiseRO.getName());
             return expertise;
         }

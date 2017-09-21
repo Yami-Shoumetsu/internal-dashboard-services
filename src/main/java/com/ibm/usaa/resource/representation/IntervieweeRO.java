@@ -5,9 +5,6 @@ package com.ibm.usaa.resource.representation;
 
 import javax.validation.constraints.NotNull;
 
-import org.springframework.hateoas.ResourceSupport;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -16,10 +13,9 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
  *
  */
 @JsonInclude(value = Include.NON_NULL)
-public class IntervieweeRO extends ResourceSupport {
+public class IntervieweeRO {
 
-    @JsonIgnore
-    private Integer resourceId;
+    private Integer id;
     @NotNull
     private String firstName;
     @NotNull
@@ -32,12 +28,12 @@ public class IntervieweeRO extends ResourceSupport {
     private Boolean internal;
     private Integer expertiseId;
 
-    public Integer getResourceId() {
-        return resourceId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setResourceId(Integer resourceId) {
-        this.resourceId = resourceId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getFirstName() {
