@@ -3,7 +3,6 @@ package com.ibm.usaa.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.StringUtils;
 
 import com.ibm.usaa.exception.InvalidDependentIdException;
 import com.ibm.usaa.exception.InvalidIdException;
@@ -23,16 +22,12 @@ public class IntervieweeService {
     @Autowired
     private ExpertiseService expertiseService;
 
-    public List<IntervieweeVO> getInterviewees(String expertiseName, Boolean internal) {
-        if (!StringUtils.isEmpty(expertiseName) && internal != null) {
-            return intervieweeRepository.findByExpertiseExpertiseNameAndIsInternal(expertiseName, internal);
-        } else if (!StringUtils.isEmpty(expertiseName) && internal == null) {
-            return intervieweeRepository.findByExpertiseExpertiseName(expertiseName);
-        } else if (StringUtils.isEmpty(expertiseName) && internal != null) {
-            return intervieweeRepository.findByIsInternal(internal);
-        } else {
-            return intervieweeRepository.findAll();
-        }
+    public List<IntervieweeVO> getInterviewees() {
+        return intervieweeRepository.findAll();
+    }
+
+    public List<IntervieweeVO> getIntervieweesByExpertise(String expertiseName) {
+        return intervieweeRepository.findByExpertiseExpertiseName(expertiseName);
     }
 
     public IntervieweeVO getInterviewee(int id) throws InvalidIdException {

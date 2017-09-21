@@ -57,8 +57,13 @@ public class IntervieweeResource {
     private IntervieweeService intervieweeService;
 
     @GET
-    public Response getInterviewees(@QueryParam("expertise") String expertise, @QueryParam("internal") Boolean internal) {
-        List<IntervieweeVO> interviewees = intervieweeService.getInterviewees(expertise, internal);
+    public Response getInterviewees(@QueryParam("expertise") String expertise) {
+        List<IntervieweeVO> interviewees;
+        if (StringUtils.isEmpty(expertise)) {
+            interviewees = intervieweeService.getInterviewees();
+        } else {
+            interviewees = intervieweeService.getIntervieweesByExpertise(expertise);
+        }
         List<IntervieweeRO> intervieweeROs = IntervieweeMapper.mapIntervieweesToRepresentationObject(interviewees);
 
         List<Resource<IntervieweeRO>> intervieweeResources = new ArrayList<>();
@@ -69,17 +74,11 @@ public class IntervieweeResource {
         }
 
         Resources<Resource<IntervieweeRO>> resources = new Resources<>(intervieweeResources);
-        Map<String, Object> queryParams = null;
-        if (!StringUtils.isEmpty(expertise) || internal != null) {
+        Map<String, String> queryParams = null;
+        if (!StringUtils.isEmpty(expertise)) {
             queryParams = new HashMap<>();
-            if (!StringUtils.isEmpty(expertise)) {
-                queryParams.put("expertise", expertise);
-            }
-            if (internal != null) {
-                queryParams.put("internal", internal);
-            }
+            queryParams.put("expertise", expertise);
         }
-
         resources.add(RestUtils.createHateoasLinks(IntervieweeResource.class, null, "self", queryParams));
         return Response.ok(resources)
                 .build();
