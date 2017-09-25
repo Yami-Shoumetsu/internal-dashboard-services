@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import com.ibm.usaa.service.ExpertiseService;
 import com.ibm.usaa.service.IntervieweeService;
+import com.ibm.usaa.service.InterviewerAvailabilityService;
 import com.ibm.usaa.service.InterviewerService;
 
 /**
@@ -37,6 +38,11 @@ public class ServiceConfiguration {
     @Bean
     public ExpertiseService expertiseService() {
         return new ExpertiseService();
+    }
+    
+    @Bean
+    public InterviewerAvailabilityService interviewerAvailabilityService() {
+        return new InterviewerAvailabilityService();
     }
 
 }

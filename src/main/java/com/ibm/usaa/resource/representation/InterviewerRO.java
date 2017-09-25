@@ -10,8 +10,6 @@ import org.springframework.hateoas.ResourceSupport;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
-import com.ibm.usaa.repository.entity.EmployeeTypeVO;
-import com.ibm.usaa.repository.entity.EmployeeVO;
 
 /**
  * @author Peter Neil Cagatin (Yami)

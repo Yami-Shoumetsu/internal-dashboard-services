@@ -9,9 +9,7 @@ import java.util.List;
 import org.springframework.util.CollectionUtils;
 
 import com.ibm.usaa.repository.entity.EmployeeVO;
-import com.ibm.usaa.repository.entity.IntervieweeVO;
 import com.ibm.usaa.repository.entity.InterviewerVO;
-import com.ibm.usaa.resource.representation.IntervieweeRO;
 import com.ibm.usaa.resource.representation.InterviewerRO;
 
 /**
