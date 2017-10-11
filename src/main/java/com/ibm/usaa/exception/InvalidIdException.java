@@ -11,20 +11,37 @@ public class InvalidIdException extends Exception {
 
     private static final long serialVersionUID = 1L;
 
-    private final int id;
+    private final Integer id;
+    private final String idString;
 
     public InvalidIdException(int id) {
         super();
         this.id = id;
+        this.idString = null;
     }
 
-    public int getId() {
+    public InvalidIdException(String id) {
+        super();
+        this.idString = id;
+        this.id = null;
+    }
+
+    public Integer getId() {
         return id;
+    }
+
+    public String getIdString() {
+        return idString;
     }
 
     @Override
     public String getMessage() {
-        return "Invalid ID: " + id;
+        if (id != null) {
+            return "Invalid ID: " + id;
+        } else if (idString != null) {
+            return "Invalid ID: " + idString;
+        }
+        return "Invalid ID";
     }
 
 }

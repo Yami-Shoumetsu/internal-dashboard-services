@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
-import javax.ws.rs.BadRequestException;
+import javax.validation.groups.ConvertGroup;
+import javax.validation.groups.Default;
 import javax.ws.rs.ClientErrorException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -32,13 +32,16 @@ import org.springframework.util.StringUtils;
 
 import com.ibm.usaa.exception.InvalidDependentIdException;
 import com.ibm.usaa.exception.InvalidIdException;
-import com.ibm.usaa.mapper.ExpertiseMapper;
+import com.ibm.usaa.mapper.InterviewHistoryMapper;
 import com.ibm.usaa.mapper.IntervieweeMapper;
-import com.ibm.usaa.repository.entity.ExpertiseVO;
+import com.ibm.usaa.repository.entity.InterviewHistoryVO;
 import com.ibm.usaa.repository.entity.IntervieweeVO;
-import com.ibm.usaa.resource.representation.ExpertiseRO;
+import com.ibm.usaa.resource.representation.InterviewHistoryRO;
 import com.ibm.usaa.resource.representation.IntervieweeRO;
 import com.ibm.usaa.resource.util.RestUtils;
+import com.ibm.usaa.resource.validation.group.Interviewee;
+import com.ibm.usaa.resource.validation.group.Update;
+import com.ibm.usaa.service.InterviewHistoryService;
 import com.ibm.usaa.service.IntervieweeService;
 
 import io.swagger.annotations.Api;
@@ -63,11 +66,14 @@ public class IntervieweeResource {
     @Autowired
     private IntervieweeService intervieweeService;
 
+    @Autowired
+    private InterviewHistoryService interviewHistoryService;
+
     @GET
     @ApiOperation(value = "Returns list of interviewees", notes = "\"content\" in the response contains list of InterVieweeRO", code = 200, response = Resources.class)
     public Response getInterviewees(
-            @ApiParam(value = "name of expertise", required = false, allowMultiple = false) @QueryParam("expertise") String expertise,
-            @ApiParam(value = "indicates if interviewees to be returned are internal IBMer or not", required = false, allowMultiple = false, allowableValues = "true,false") @QueryParam("internal") Boolean internal) {
+                                    @ApiParam(value = "name of expertise", required = false, allowMultiple = false) @QueryParam("expertise") String expertise,
+                                    @ApiParam(value = "indicates if interviewees to be returned are internal IBMer or not", required = false, allowMultiple = false, allowableValues = "true,false") @QueryParam("internal") Boolean internal) {
         List<IntervieweeVO> interviewees = intervieweeService.getInterviewees(expertise, internal);
         List<IntervieweeRO> intervieweeROs = IntervieweeMapper.mapIntervieweesToRepresentationObject(interviewees);
 
@@ -87,26 +93,25 @@ public class IntervieweeResource {
             }
         }
         resources.add(RestUtils.createHateoasLinks(IntervieweeResource.class, null, "self", queryParams));
-        return Response.ok(resources)
-                .build();
+        return Response.ok(resources).build();
     }
 
     @POST
     @ApiOperation(value = "Creates new interviewee")
     @ApiResponses({
-            @ApiResponse(code = 201, message = "successful operation", responseHeaders = @ResponseHeader(name = "Location", description = "URI of the newly created interviewee resource", response = String.class)),
-            @ApiResponse(code = 400, message = "Missing required values in the body of request"),
-            @ApiResponse(code = 409, message = "Specified expertise ID in the request body does not exist") })
+                    @ApiResponse(code = 201, message = "successful operation", responseHeaders = @ResponseHeader(name = "Location", description = "URI of the newly created interviewee resource", response = String.class)),
+                    @ApiResponse(code = 400, message = "Missing required values in the body of request"),
+                    @ApiResponse(code = 409, message = "Some details on the Interview History is not valid") })
+
     public Response addInterviewee(
-            @ApiParam(value = "Interviewee resource that needs to be created. \"expertiseId\" in IntervieweeRO is also required for this operation.", required = true) @Valid IntervieweeRO request) {
-        if (request.getExpertiseId() == null) {
-            throw new BadRequestException();
-        }
+                                   @ApiParam(value = "Interviewee resource that needs to be created. \"intervieweeId\" in Interview History is not required on this operation.", required = true) @Valid @ConvertGroup(from = Default.class, to = Interviewee.class) IntervieweeRO request) {
         try {
             IntervieweeVO interviewee = IntervieweeMapper.mapIntervieweeFromRepresentationObject(request);
+            List<InterviewHistoryVO> interviewHistories = InterviewHistoryMapper.mapInterviewHistoriesFromRepresentationObject(
+                                                                                                                               request.getInterviewHistories());
+            interviewee.setInterviewHistories(interviewHistories);
             int newIntervieweeId = intervieweeService.addInterviewee(interviewee);
-            return Response.created(RestUtils.createNewResourceUri(IntervieweeResource.class, "getInterviewee", newIntervieweeId))
-                    .build();
+            return Response.created(RestUtils.createNewResourceUri(IntervieweeResource.class, "getInterviewee", newIntervieweeId)).build();
         } catch (InvalidDependentIdException e) {
             LOGGER.warn(e.getMessage(), e);
             throw new ClientErrorException(e.getMessage(), Status.CONFLICT, e);
@@ -117,17 +122,25 @@ public class IntervieweeResource {
     @Path("/{interviewee-id}")
     @ApiOperation(value = "Returns detail of an interviewee")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "successful operation", response = IntervieweeRO.class),
-            @ApiResponse(code = 404, message = "Interviewee not found") })
-    public Response getInterviewee(@ApiParam(value = "ID of interviewee", required = true) @PathParam("interviewee-id") int intervieweeId) {
+                    @ApiResponse(code = 200, message = "successful operation", response = IntervieweeRO.class),
+                    @ApiResponse(code = 404, message = "Interviewee not found") })
+    public Response getInterviewee(
+                                   @ApiParam(value = "ID of interviewee", required = true) @PathParam("interviewee-id") int intervieweeId,
+                                   @ApiParam(value = "Parameter to expand child resources", allowMultiple = true, allowableValues = "expertise") @QueryParam("expand") List<String> expand) {
         try {
             IntervieweeVO interviewee = intervieweeService.getInterviewee(intervieweeId);
             IntervieweeRO intervieweeRO = IntervieweeMapper.mapIntervieweeToRepresentationObject(interviewee);
             intervieweeRO.add(RestUtils.createHateoasLinks(IntervieweeResource.class, null, "interviewees", null));
             intervieweeRO.add(RestUtils.createHateoasLinks(IntervieweeResource.class, "getInterviewee", "self", null, intervieweeId));
-            intervieweeRO.add(RestUtils.createHateoasLinks(IntervieweeResource.class, "getExpertiseOfInterviewee", "expertise", null, intervieweeId));
-            return Response.ok(intervieweeRO)
-                    .build();
+            intervieweeRO.add(
+                              RestUtils.createHateoasLinks(
+                                                           IntervieweeResource.class,
+                                                           "getInterviewHistoriesOfInterviewee",
+                                                           "interview-histories",
+                                                           null,
+                                                           intervieweeId));
+
+            return Response.ok(intervieweeRO).build();
         } catch (InvalidIdException e) {
             LOGGER.warn(e.getMessage(), e);
             throw new NotFoundException(e.getMessage(), e);
@@ -138,18 +151,17 @@ public class IntervieweeResource {
     @Path("/{interviewee-id}")
     @ApiOperation(value = "Updates an existing interviewee")
     @ApiResponses({
-            @ApiResponse(code = 204, message = "successful operation"),
-            @ApiResponse(code = 400, message = "Missing required values in the body of request"),
-            @ApiResponse(code = 404, message = "Interviewee to be updated does not exist") })
+                    @ApiResponse(code = 204, message = "successful operation"),
+                    @ApiResponse(code = 400, message = "Missing required values in the body of request"),
+                    @ApiResponse(code = 404, message = "Interviewee to be updated does not exist") })
     public Response updateInterviewee(
-            @ApiParam(value = "ID of interviewee", required = true) @PathParam("interviewee-id") int intervieweeId,
-            @ApiParam(value = "Updated Interviewee resource. Value of \"expertiseId\" in IntervieweeRO is ignored for this operation.", required = true) @Valid IntervieweeRO request) {
+                                      @ApiParam(value = "ID of interviewee", required = true) @PathParam("interviewee-id") int intervieweeId,
+                                      @ApiParam(value = "Updated Interviewee resource. Interview histories are ignored.", required = true) @Valid @ConvertGroup(from = Default.class, to = Update.class) IntervieweeRO request) {
         try {
             request.setResourceId(intervieweeId);
             IntervieweeVO interviewee = IntervieweeMapper.mapIntervieweeFromRepresentationObject(request);
             intervieweeService.updateInterviewee(interviewee);
-            return Response.noContent()
-                    .build();
+            return Response.noContent().build();
         } catch (InvalidIdException e) {
             LOGGER.warn(e.getMessage(), e);
             throw new NotFoundException(e.getMessage(), e);
@@ -157,49 +169,82 @@ public class IntervieweeResource {
     }
 
     @GET
-    @Path("/{interviewee-id}/expertise")
-    @ApiOperation(value = "Returns detail of the expertise of an interviewee")
+    @Path("/{interviewee-id}/interview-histories")
+    @ApiOperation(value = "Returns list of interview history of interviewee", notes = "\"content\" in the response contains list of InterviewHistoryRO")
     @ApiResponses({
-            @ApiResponse(code = 200, message = "successful operation", response = ExpertiseRO.class),
-            @ApiResponse(code = 404, message = "Interviewee does not exist") })
-    public Response getExpertiseOfInterviewee(
-            @ApiParam(value = "ID of interviewee", required = true) @PathParam("interviewee-id") int intervieweeId) {
+                    @ApiResponse(code = 200, message = "successful operation", response = Resources.class),
+                    @ApiResponse(code = 404, message = "Interviewee does not exist") })
+    public Response getInterviewHistoriesOfInterviewee(
+                                                       @ApiParam(value = "ID of interviewee", required = true) @PathParam("interviewee-id") int intervieweeId) {
         try {
-            ExpertiseVO expertise = intervieweeService.getExpertiseOfInterviewee(intervieweeId);
-            ExpertiseRO expertiseRO = ExpertiseMapper.mapExpertiseToRepresentationObject(expertise);
-            expertiseRO.add(RestUtils.createHateoasLinks(IntervieweeResource.class, "getInterviewee", "parent", null, intervieweeId));
-            expertiseRO.add(RestUtils.createHateoasLinks(IntervieweeResource.class, "getExpertiseOfInterviewee", "self", null, intervieweeId));
-            expertiseRO.add(RestUtils.createHateoasLinks(ExpertiseResource.class, "getExpertise", "origin", null, expertiseRO.getResourceId()));
-            return Response.ok(expertiseRO)
-                    .build();
+            List<InterviewHistoryVO> interviewHistories = intervieweeService.getInterviewHistoriesOfInterviewee(intervieweeId);
+            List<InterviewHistoryRO> interviewHistoryROs = InterviewHistoryMapper.mapInterviewHistoriesToRepresentationObject(interviewHistories);
+
+            interviewHistoryROs.forEach((interviewHistoryRO) -> {
+                interviewHistoryRO.add(
+                                       RestUtils.createHateoasLinks(
+                                                                    IntervieweeResource.class,
+                                                                    "getInterviewHistoryOfInterviewee",
+                                                                    "self",
+                                                                    null,
+                                                                    intervieweeId,
+                                                                    interviewHistoryRO.getInterviewerId(),
+                                                                    interviewHistoryRO.getIntervieweeId(),
+                                                                    interviewHistoryRO.getExpertiseId()));
+            });
+
+            Resources<InterviewHistoryRO> resources = new Resources<>(interviewHistoryROs);
+            resources.add(RestUtils.createHateoasLinks(IntervieweeResource.class, "getInterviewee", "parent", null, intervieweeId));
+            resources.add(RestUtils.createHateoasLinks(IntervieweeResource.class, "getInterviewHistoriesOfInterviewee", "self", null, intervieweeId));
+            return Response.ok(resources).build();
         } catch (InvalidIdException e) {
             LOGGER.warn(e.getMessage(), e);
             throw new NotFoundException(e.getMessage(), e);
         }
     }
 
-    @PUT
-    @Path("/{interviewee-id}/expertise")
-    @ApiOperation(value = "Updates the expertise of an interviewee")
+    @GET
+    @Path("/{interviewee-id}/interview-histories/{interviewer-id}-{interviewee-id-2}-{expertise-id}")
+    @ApiOperation(value = "Returns detail of an interview history")
     @ApiResponses({
-            @ApiResponse(code = 204, message = "successful operation"),
-            @ApiResponse(code = 400, message = "Missing required values in the body of request"),
-            @ApiResponse(code = 404, message = "Interviewee does not exist"),
-            @ApiResponse(code = 409, message = "Specified expertise ID in the request body does not exist") })
-    public Response updateExpertiseOfInterviewee(
-            @ApiParam(value = "ID of interviewee", required = true) @PathParam("interviewee-id") int intervieweeId,
-            @ApiParam(value = "ID of expertise", required = true) @NotNull Integer expertiseId) {
+                    @ApiResponse(code = 200, message = "successful operation", response = InterviewHistoryRO.class),
+                    @ApiResponse(code = 404, message = "Interviewee or Interviewee History does not exist") })
+    public Response getInterviewHistoryOfInterviewee(
+                                                     @ApiParam(value = "ID of interviewee", required = true) @PathParam("interviewee-id") int intervieweeId,
+                                                     @ApiParam(value = "ID of interviewee", required = true) @PathParam("interviewee-id-2") int intervieweeId2,
+                                                     @ApiParam(value = "ID of interviewer", required = true) @PathParam("interviewer-id") int interviewerId,
+                                                     @ApiParam(value = "ID of expertise", required = true) @PathParam("expertise-id") int expertiseId) {
         try {
-            intervieweeService.updateExpertiseOfInterviewee(intervieweeId, expertiseId);
-            return Response.noContent()
-                    .build();
+            if (!intervieweeService.intervieweeExists(intervieweeId)) {
+                throw new InvalidIdException(intervieweeId);
+            }
+            if (intervieweeId != intervieweeId2) {
+                throw new InvalidIdException(intervieweeId + " " + intervieweeId2);
+            }
+            InterviewHistoryVO interviewHistory = interviewHistoryService.getInterviewHistory(interviewerId, intervieweeId2, expertiseId);
+            InterviewHistoryRO interviewHistoryRO = InterviewHistoryMapper.mapInterviewHistoryToRepresentationObject(interviewHistory);
+            interviewHistoryRO.add(RestUtils.createHateoasLinks(IntervieweeResource.class, "getInterviewee", "parent", null, intervieweeId));
+            interviewHistoryRO.add(
+                                   RestUtils.createHateoasLinks(
+                                                                IntervieweeResource.class,
+                                                                "getInterviewHistoriesOfInterviewee",
+                                                                "interview-histories",
+                                                                null,
+                                                                intervieweeId));
+            interviewHistoryRO.add(
+                                   RestUtils.createHateoasLinks(
+                                                                IntervieweeResource.class,
+                                                                "getInterviewHistoryOfInterviewee",
+                                                                "self",
+                                                                null,
+                                                                intervieweeId,
+                                                                interviewerId,
+                                                                intervieweeId2,
+                                                                expertiseId));
+            return Response.ok(interviewHistoryRO).build();
         } catch (InvalidIdException e) {
             LOGGER.warn(e.getMessage(), e);
             throw new NotFoundException(e.getMessage(), e);
-        } catch (InvalidDependentIdException e) {
-            LOGGER.warn(e.getMessage(), e);
-            throw new ClientErrorException(e.getMessage(), Status.CONFLICT, e);
         }
     }
-
 }

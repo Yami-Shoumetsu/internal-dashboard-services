@@ -3,13 +3,19 @@
  */
 package com.ibm.usaa.resource.representation;
 
+import java.util.List;
+
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.springframework.hateoas.ResourceSupport;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+import com.ibm.usaa.resource.validation.group.Interviewee;
+import com.ibm.usaa.resource.validation.group.Update;
 
 /**
  * @author Peter Neil Cagatin (Yami)
@@ -20,17 +26,20 @@ public class IntervieweeRO extends ResourceSupport {
 
     @JsonIgnore
     private Integer resourceId;
-    @NotNull
+    @NotNull(groups = { Interviewee.class, Update.class })
     private String firstName;
-    @NotNull
+    @NotNull(groups = { Interviewee.class, Update.class })
     private String middleName;
-    @NotNull
+    @NotNull(groups = { Interviewee.class, Update.class })
     private String lastName;
     private String contactNumber;
     private String emailAddress;
-    @NotNull
+    @NotNull(groups = { Interviewee.class, Update.class })
     private Boolean internal;
-    private Integer expertiseId;
+    @NotNull(groups = Interviewee.class)
+    @Size(min = 1, groups = Interviewee.class)
+    @Valid
+    private List<InterviewHistoryRO> interviewHistories;
 
     public Integer getResourceId() {
         return resourceId;
@@ -88,12 +97,12 @@ public class IntervieweeRO extends ResourceSupport {
         this.internal = internal;
     }
 
-    public Integer getExpertiseId() {
-        return expertiseId;
+    public List<InterviewHistoryRO> getInterviewHistories() {
+        return interviewHistories;
     }
 
-    public void setExpertiseId(Integer expertiseId) {
-        this.expertiseId = expertiseId;
+    public void setInterviewHistories(List<InterviewHistoryRO> interviewHistories) {
+        this.interviewHistories = interviewHistories;
     }
 
 }

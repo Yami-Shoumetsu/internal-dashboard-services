@@ -45,16 +45,15 @@ public class IntervieweeMapper {
 
     public static IntervieweeVO mapIntervieweeFromRepresentationObject(IntervieweeRO intervieweeRO) {
         if (intervieweeRO != null) {
-            IntervieweeVO interViewee = new IntervieweeVO();
-            interViewee.setIntervieweeId(intervieweeRO.getResourceId());
-            interViewee.setFirstName(intervieweeRO.getFirstName());
-            interViewee.setMiddleName(intervieweeRO.getMiddleName());
-            interViewee.setLastName(intervieweeRO.getLastName());
-            interViewee.setEmailAddress(intervieweeRO.getEmailAddress());
-            interViewee.setContactNumber(intervieweeRO.getContactNumber());
-            interViewee.setInternal(intervieweeRO.getInternal());
-            interViewee.setExpertiseId(intervieweeRO.getExpertiseId());
-            return interViewee;
+            IntervieweeVO interviewee = new IntervieweeVO();
+            interviewee.setIntervieweeId(intervieweeRO.getResourceId());
+            interviewee.setFirstName(intervieweeRO.getFirstName());
+            interviewee.setMiddleName(intervieweeRO.getMiddleName());
+            interviewee.setLastName(intervieweeRO.getLastName());
+            interviewee.setEmailAddress(intervieweeRO.getEmailAddress());
+            interviewee.setContactNumber(intervieweeRO.getContactNumber());
+            interviewee.setInternal(intervieweeRO.getInternal());
+            return interviewee;
         }
         return null;
     }

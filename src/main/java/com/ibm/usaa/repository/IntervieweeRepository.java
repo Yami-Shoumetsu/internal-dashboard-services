@@ -12,10 +12,10 @@ import com.ibm.usaa.repository.entity.IntervieweeVO;
  */
 public interface IntervieweeRepository extends JpaRepository<IntervieweeVO, Integer> {
 
-    public List<IntervieweeVO> findByExpertiseExpertiseName(String expertiseName);
+    public List<IntervieweeVO> findByInterviewHistoriesExpertiseExpertiseName(String expertiseName);
 
     public List<IntervieweeVO> findByIsInternal(boolean isInternal);
 
-    public List<IntervieweeVO> findByExpertiseExpertiseNameAndIsInternal(String expertiseName, boolean isInternal);
+    public List<IntervieweeVO> findByInterviewHistoriesExpertiseExpertiseNameAndIsInternal(String expertiseName, boolean isInternal);
 
 }

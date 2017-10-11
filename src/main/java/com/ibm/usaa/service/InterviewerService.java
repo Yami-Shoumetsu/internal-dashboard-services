@@ -20,18 +20,22 @@ public class InterviewerService {
 
     public List<InterviewerVO> getInterviewers(String expertiseName) {
         if (!StringUtils.isEmpty(expertiseName)) {
-        	return interviewerRepository.findByExpertisesExpertiseName(expertiseName);
+            return interviewerRepository.findByExpertisesExpertiseName(expertiseName);
         } else {
             return interviewerRepository.findAll();
         }
     }
-    
+
     public InterviewerVO getInterviewer(int id) throws InvalidIdException {
         InterviewerVO interviewerVO = interviewerRepository.findOne(id);
         if (interviewerVO == null) {
             throw new InvalidIdException(id);
         }
         return interviewerVO;
+    }
+
+    public boolean interviewerExists(int id) {
+        return interviewerRepository.exists(id);
     }
 
 }
