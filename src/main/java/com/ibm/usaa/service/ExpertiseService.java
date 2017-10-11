@@ -49,4 +49,8 @@ public class ExpertiseService {
         expertiseRepository.save(expertiseVO);
     }
 
+    public boolean expertiseExists(int id) {
+        return expertiseRepository.exists(id);
+    }
+
 }

@@ -1,78 +1,92 @@
 package com.ibm.usaa.repository.entity;
 
 import java.io.Serializable;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 @Embeddable
-public class InterviewHistoryPK implements Serializable{
+public class InterviewHistoryPK implements Serializable {
 
-	private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-	@Column(name="INT_ID")
-	private Integer interviewerId;
-	
-	@Column(name="INT_VIEW_ID")
-	private Integer intervieweeId;
-	
-	@Column(name="DATE")
-	private Date interviewDate;
-	
-	public Integer getInterviewerId() {
-		return interviewerId;
-	}
-	
-	public void setInterviewerId(Integer interviewerId) {
-		this.interviewerId = interviewerId;
-	}
-	
-	public Integer getIntervieweeId() {
-		return intervieweeId;
-	}
-	
-	public void setIntervieweeId(Integer intervieweeId) {
-		this.intervieweeId = intervieweeId;
-	}
-	
-	public Date getInterviewDate() {
-		return interviewDate;
-	}
-	
-	public void setInterviewDate(Date interviewDate) {
-		this.interviewDate = interviewDate;
-	}
+    @Column(name = "INT_ID")
+    private Integer interviewerId;
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((interviewDate == null) ? 0 : interviewDate.hashCode());
-		result = prime * result + intervieweeId;
-		result = prime * result + interviewerId;
-		return result;
-	}
+    @Column(name = "INT_VIEW_ID")
+    private Integer intervieweeId;
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		InterviewHistoryPK other = (InterviewHistoryPK) obj;
-		if (interviewDate == null) {
-			if (other.interviewDate != null)
-				return false;
-		} else if (!interviewDate.equals(other.interviewDate))
-			return false;
-		if (intervieweeId != other.intervieweeId)
-			return false;
-		if (interviewerId != other.interviewerId)
-			return false;
-		return true;
-	}
-	
+    @Column(name = "ACCT_EXT_ID")
+    private Integer expertiseId;
+
+    public Integer getInterviewerId() {
+        return interviewerId;
+    }
+
+    public void setInterviewerId(Integer interviewerId) {
+        this.interviewerId = interviewerId;
+    }
+
+    public Integer getIntervieweeId() {
+        return intervieweeId;
+    }
+
+    public void setIntervieweeId(Integer intervieweeId) {
+        this.intervieweeId = intervieweeId;
+    }
+
+    public Integer getExpertiseId() {
+        return expertiseId;
+    }
+
+    public void setExpertiseId(Integer expertiseId) {
+        this.expertiseId = expertiseId;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((expertiseId == null) ? 0 : expertiseId.hashCode());
+        result = prime * result + ((intervieweeId == null) ? 0 : intervieweeId.hashCode());
+        result = prime * result + ((interviewerId == null) ? 0 : interviewerId.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (!(obj instanceof InterviewHistoryPK)) {
+            return false;
+        }
+        InterviewHistoryPK other = (InterviewHistoryPK) obj;
+        if (expertiseId == null) {
+            if (other.expertiseId != null) {
+                return false;
+            }
+        } else if (!expertiseId.equals(other.expertiseId)) {
+            return false;
+        }
+        if (intervieweeId == null) {
+            if (other.intervieweeId != null) {
+                return false;
+            }
+        } else if (!intervieweeId.equals(other.intervieweeId)) {
+            return false;
+        }
+        if (interviewerId == null) {
+            if (other.interviewerId != null) {
+                return false;
+            }
+        } else if (!interviewerId.equals(other.interviewerId)) {
+            return false;
+        }
+        return true;
+    }
+
 }

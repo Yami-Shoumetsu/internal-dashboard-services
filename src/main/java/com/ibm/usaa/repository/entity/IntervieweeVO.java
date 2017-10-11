@@ -1,118 +1,109 @@
 package com.ibm.usaa.repository.entity;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 @Entity
 @Table(name = "INTERVIEWEES")
 public class IntervieweeVO {
 
-	@Id
-	@GeneratedValue
-	@Column(name = "INT_VIEW_ID", nullable = false, unique = true)
-	private Integer intervieweeId;
+    @Id
+    @GeneratedValue
+    @Column(name = "INT_VIEW_ID", nullable = false, unique = true)
+    private Integer intervieweeId;
 
-	@Column(name = "INT_F_NAME")
-	private String firstName;
+    @Column(name = "INT_F_NAME")
+    private String firstName;
 
-	@Column(name = "INT_M_NAME")
-	private String middleName;
+    @Column(name = "INT_M_NAME")
+    private String middleName;
 
-	@Column(name = "INT_L_NAME")
-	private String lastName;
+    @Column(name = "INT_L_NAME")
+    private String lastName;
 
-	@Column(name = "INT_CONTACT_NUMBER")
-	private String contactNumber;
+    @Column(name = "INT_CONTACT_NUMBER")
+    private String contactNumber;
 
-	@Column(name = "INT_EMAIL")
-	private String emailAddress;
+    @Column(name = "INT_EMAIL")
+    private String emailAddress;
 
-	@Column(name = "IS_INTERNAL", columnDefinition = "INT(1)")
-	private Boolean isInternal;
+    @Column(name = "IS_INTERNAL", columnDefinition = "INT(1)")
+    private Boolean isInternal;
 
-	@OneToOne
-	@JoinColumn(name = "ACCT_EXT_ID")
-	private ExpertiseVO expertise;
+    @OneToMany(fetch = FetchType.LAZY)
+    @JoinColumn(name = "INT_VIEW_ID", insertable = false, updatable = false)
+    private List<InterviewHistoryVO> interviewHistories;
 
-	@Transient
-	private Integer expertiseId;
+    public Integer getIntervieweeId() {
+        return intervieweeId;
+    }
 
-	public Integer getIntervieweeId() {
-		return intervieweeId;
-	}
+    public void setIntervieweeId(Integer intervieweeId) {
+        this.intervieweeId = intervieweeId;
+    }
 
-	public void setIntervieweeId(Integer intervieweeId) {
-		this.intervieweeId = intervieweeId;
-	}
+    public String getFirstName() {
+        return firstName;
+    }
 
-	public String getFirstName() {
-		return firstName;
-	}
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+    public String getMiddleName() {
+        return middleName;
+    }
 
-	public String getMiddleName() {
-		return middleName;
-	}
+    public void setMiddleName(String middleName) {
+        this.middleName = middleName;
+    }
 
-	public void setMiddleName(String middleName) {
-		this.middleName = middleName;
-	}
+    public String getLastName() {
+        return lastName;
+    }
 
-	public String getLastName() {
-		return lastName;
-	}
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
+    public String getContactNumber() {
+        return contactNumber;
+    }
 
-	public String getContactNumber() {
-		return contactNumber;
-	}
+    public void setContactNumber(String contactNumber) {
+        this.contactNumber = contactNumber;
+    }
 
-	public void setContactNumber(String contactNumber) {
-		this.contactNumber = contactNumber;
-	}
+    public String getEmailAddress() {
+        return emailAddress;
+    }
 
-	public String getEmailAddress() {
-		return emailAddress;
-	}
+    public void setEmailAddress(String emailAddress) {
+        this.emailAddress = emailAddress;
+    }
 
-	public void setEmailAddress(String emailAddress) {
-		this.emailAddress = emailAddress;
-	}
+    public Boolean isInternal() {
+        return isInternal;
+    }
 
-	public Boolean isInternal() {
-		return isInternal;
-	}
+    public void setInternal(Boolean isInternal) {
+        this.isInternal = isInternal;
+    }
 
-	public void setInternal(Boolean isInternal) {
-		this.isInternal = isInternal;
-	}
+    public List<InterviewHistoryVO> getInterviewHistories() {
+        return interviewHistories;
+    }
 
-	public ExpertiseVO getExpertise() {
-		return expertise;
-	}
-
-	public void setExpertise(ExpertiseVO expertise) {
-		this.expertise = expertise;
-	}
-
-	public Integer getExpertiseId() {
-		return expertiseId;
-	}
-
-	public void setExpertiseId(Integer expertiseId) {
-		this.expertiseId = expertiseId;
-	}
+    public void setInterviewHistories(List<InterviewHistoryVO> interviewHistories) {
+        this.interviewHistories = interviewHistories;
+    }
 
 }

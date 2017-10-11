@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import com.ibm.usaa.service.ExpertiseService;
+import com.ibm.usaa.service.InterviewHistoryService;
 import com.ibm.usaa.service.IntervieweeService;
 import com.ibm.usaa.service.InterviewerService;
 
@@ -28,7 +29,7 @@ public class ServiceConfiguration {
     public IntervieweeService intervieweeService() {
         return new IntervieweeService();
     }
-    
+
     @Bean
     public InterviewerService interviewerService() {
         return new InterviewerService();
@@ -37,6 +38,11 @@ public class ServiceConfiguration {
     @Bean
     public ExpertiseService expertiseService() {
         return new ExpertiseService();
+    }
+
+    @Bean
+    public InterviewHistoryService interviewHistoryService() {
+        return new InterviewHistoryService();
     }
 
 }
